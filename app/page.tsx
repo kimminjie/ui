@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import { useState } from "react";
 
 import { K_LEAGUE_NOTICE, PROMPT_PLACEHOLDER } from "./constants";
@@ -18,14 +19,13 @@ export default function Home() {
     console.log("입력한 검색어:", trimmed);
     window.alert(`입력한 검색어: ${trimmed}`);
 
-    fetch(
-      `http://localhost:8080/soccer/search?keyword=${encodeURIComponent(
-        trimmed,
-      )}`,
-      { method: "GET", mode: "no-cors" },
-    ).catch((error) => {
+    try {
+      await axios.get("http://localhost:8080/soccer/search", {
+        params: { keyword: trimmed },
+      });
+    } catch (error) {
       console.warn("검색 요청을 보내는 중 오류 발생:", error);
-    });
+    }
   };
 
   return (
